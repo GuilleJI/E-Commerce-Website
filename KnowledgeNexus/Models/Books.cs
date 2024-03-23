@@ -30,7 +30,9 @@ namespace KnowledgeNexus.Models
                 return Price * Quantity;
             }
         }
-       
+
+        //adding datetime (After that, we add-migration command with "AddSelectionDateToBook" as a name to our new table, followed by update-database)
+        public DateTime SelectionDate { get; set; }
 
     }
 
