@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using KnowledgeNexus.Data;
 namespace KnowledgeNexus
 {
     public class Program
@@ -5,6 +8,8 @@ namespace KnowledgeNexus
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<KnowledgeNexusContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("KnowledgeNexusContext") ?? throw new InvalidOperationException("Connection string 'KnowledgeNexusContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddRazorPages();
