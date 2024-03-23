@@ -12,6 +12,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
 {
     public class IndexModel : PageModel
     {
+        // Properties should be at the top od the class
         private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;
         public IList<Books> Books { get;set; } = default!;
 

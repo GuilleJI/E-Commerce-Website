@@ -1,4 +1,6 @@
-﻿namespace KnowledgeNexus.Models
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace KnowledgeNexus.Models
 {
     public class Books
     {
@@ -16,6 +18,20 @@
 
         //Book price
         public decimal Price { get; set; }
+
+        //Book quantity 
+        public int Quantity { get; set; }
+
+        //Calculating the subtotal
+        public decimal Subtotal
+        {
+            get
+            {
+                return Price * Quantity;
+            }
+        }
+       
+
     }
 
 }

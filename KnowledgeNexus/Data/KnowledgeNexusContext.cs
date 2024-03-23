@@ -14,6 +14,6 @@ namespace KnowledgeNexus.Data
         {
         }
 
-        public DbSet<KnowledgeNexus.Models.Books> Books { get; set; } = default!;
+        public DbSet<KnowledgeNexus.Models.Books> Books { get; set; } = default!; //<----representation of our database
     }
 }
