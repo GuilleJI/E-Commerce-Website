@@ -12,7 +12,12 @@ namespace KnowledgeNexus.Pages.BookAdmin
 {
     public class CreateModel : PageModel
     {
+        //Seperating class properties 
+
         private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;
+
+        [BindProperty]
+        public Books Books { get; set; } = default!;
 
         public CreateModel(KnowledgeNexus.Data.KnowledgeNexusContext context)
         {
@@ -24,9 +29,6 @@ namespace KnowledgeNexus.Pages.BookAdmin
             return Page();
         }
 
-        [BindProperty]
-        public Books Books { get; set; } = default!;
-
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -35,6 +37,11 @@ namespace KnowledgeNexus.Pages.BookAdmin
                 return Page();
             }
 
+            // Set the Selection Date for the book being selected by the buyer 
+
+            Books.SelectionDate = DateTime.Now;
+
+            // Sync .net context with database (execute insert command) 
             _context.Books.Add(Books);
             await _context.SaveChangesAsync();
 

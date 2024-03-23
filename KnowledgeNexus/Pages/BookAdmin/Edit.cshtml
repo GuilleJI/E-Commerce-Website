@@ -12,6 +12,11 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Books.BooksId" />
+            <input type="hidden" asp-for="Books.SelectionDate" />
+
+            <div class="mb-3">
+                Selected: @Model.Books.SelectionDate
+            </div>
             <div class="mb-3">
                 <label asp-for="Books.Name" class="control-label"></label>
                 <input asp-for="Books.Name" class="form-control" />
