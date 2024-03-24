@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using KnowledgeNexus.Data;
+using KnowledgeNexus.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using KnowledgeNexus.Data;
-using KnowledgeNexus.Models;
 
-namespace KnowledgeNexus.Pages.BookAdmin
+namespace KnowledgeNexus.Pages
 {
-    public class DetailsModel : PageModel
+    public class DisplayBooksModel : PageModel
     {
-        private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;
+        //Class properties
+        private readonly KnowledgeNexusContext _context;
 
-        public DetailsModel(KnowledgeNexus.Data.KnowledgeNexusContext context)
+        public Books Books { get; set; } = default!;
+
+        //Constructor 
+        public DisplayBooksModel(KnowledgeNexusContext context)
         {
             _context = context;
         }
 
-        public Books Books { get; set; } = default!;
-
+        //Get 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound(); 
             }
-
             var books = await _context.Books.FirstOrDefaultAsync(m => m.BooksId == id);
+
             if (books == null)
             {
                 return NotFound();

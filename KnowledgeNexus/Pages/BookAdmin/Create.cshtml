@@ -10,8 +10,13 @@
 <hr />
 <div class="row">
     <div class="col-md-3">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="FileUpload" class="form-label"></label>
+                <input asp-for="FileUpload" class="form-control" />
+                <span asp-validation-for="FileUpload" class="text-danger"></span>
+            </div>
             <div class="mb-3">
                 <label asp-for="Books.Name" class="control-label"></label>
                 <input asp-for="Books.Name" class="form-control" />
@@ -21,11 +26,6 @@
                 <label asp-for="Books.Description" class="control-label"></label>
                 <input asp-for="Books.Description" class="form-control" />
                 <span asp-validation-for="Books.Description" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Books.FileName" class="control-label"></label>
-                <input asp-for="Books.FileName" class="form-control" />
-                <span asp-validation-for="Books.FileName" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Books.Quantity" class="control-label"></label>
