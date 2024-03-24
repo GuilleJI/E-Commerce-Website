@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KnowledgeNexus.Data;
 using KnowledgeNexus.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KnowledgeNexus.Pages.BookAdmin
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;

@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using KnowledgeNexus.Data;
 using KnowledgeNexus.Models;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KnowledgeNexus.Pages.BookAdmin
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         //Seperating class properties 

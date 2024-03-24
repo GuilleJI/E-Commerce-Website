@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using KnowledgeNexus.Data;
 using KnowledgeNexus.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KnowledgeNexus.Pages.BookAdmin
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;

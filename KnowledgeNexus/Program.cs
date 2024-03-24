@@ -20,7 +20,10 @@ namespace KnowledgeNexus
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+                    options.SlidingExpiration = true; //resetting the clock
                     options.LoginPath = "/BookAdmin/Login"; 
+                    options.AccessDeniedPath = "/AccessDenied/";
                 });
 
             var app = builder.Build();
