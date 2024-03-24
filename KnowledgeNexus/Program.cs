@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using KnowledgeNexus.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace KnowledgeNexus
 {
     public class Program
     {
+
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,12 @@ namespace KnowledgeNexus
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/BookAdmin/Login"; 
+                });
 
             var app = builder.Build();
 
@@ -29,6 +38,9 @@ namespace KnowledgeNexus
 
             app.UseRouting();
 
+            //both UseAuthentication and UseAuthorization must be applied after UseRouting
+
+            app.UseAuthentication(); //<---Added UserAuthentication
             app.UseAuthorization();
 
             app.MapRazorPages();
