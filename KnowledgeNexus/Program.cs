@@ -23,6 +23,7 @@ namespace KnowledgeNexus
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
                     options.SlidingExpiration = true; //resetting the clock
                     options.LoginPath = "/BookAdmin/Login"; 
+                    options.LogoutPath = "/BookAdmin/Logout";
                     options.AccessDeniedPath = "/AccessDenied/";
                 });
 

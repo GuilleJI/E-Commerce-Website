@@ -32,7 +32,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
                 return NotFound();
             }
 
-            var books =  await _context.Books.FirstOrDefaultAsync(m => m.BooksId == id);
+            var books = await _context.Books.FirstOrDefaultAsync(m => m.BooksId == id);
             if (books == null)
             {
                 return NotFound();
@@ -58,8 +58,8 @@ namespace KnowledgeNexus.Pages.BookAdmin
             }
 
             //Updating properties of existingBook with values from Books
-            existingBook.Name = Books.Name; 
-            existingBook .Description = Books.Description;
+            existingBook.Name = Books.Name;
+            existingBook.Description = Books.Description;
             existingBook.Price = Books.Price;
             existingBook.Quantity = Books.Quantity;
 
