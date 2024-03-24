@@ -48,7 +48,21 @@ namespace KnowledgeNexus.Pages.BookAdmin
                 return Page();
             }
 
-            _context.Attach(Books).State = EntityState.Modified;
+            var existingBook = await _context.Books.FirstOrDefaultAsync(m => m.BooksId == Books.BooksId);
+
+            if (existingBook == null)
+            {
+                return NotFound();
+            }
+
+            //Updating properties of existingBook with values from Books
+            existingBook.Name = Books.Name; 
+            existingBook .Description = Books.Description;
+            existingBook.Price = Books.Price;
+            existingBook.Quantity = Books.Quantity;
+
+            //Retain the existing FIleName value 
+            Books.FileName = existingBook.FileName;
 
             try
             {
@@ -73,5 +87,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
         {
             return _context.Books.Any(e => e.BooksId == id);
         }
+
+
     }
 }
