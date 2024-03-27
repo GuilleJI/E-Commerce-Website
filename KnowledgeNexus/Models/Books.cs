@@ -19,21 +19,6 @@ namespace KnowledgeNexus.Models
         //Book price
         public decimal Price { get; set; }
 
-        //Book quantity 
-        public int Quantity { get; set; }
-
-        //Calculating the subtotal
-        public decimal Subtotal
-        {
-            get
-            {
-                return Price * Quantity;
-            }
-        }
-
-        //adding datetime (After that, we add-migration command with "AddSelectionDateToBook" as a name to our new table, followed by update-database)
-        public DateTime SelectionDate { get; set; }
-
     }
 
 }

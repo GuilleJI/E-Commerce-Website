@@ -5,12 +5,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>My Order List</h1>
-<br/>
+<h1>Book List</h1>
+<hr />
 
 <p>
-    <a asp-page="Create" class=" btn btn-success">Buy Books</a>
+    <a asp-page="Create" class=" btn btn-success">Add New</a>
 </p>
+<br/>
 
 @foreach (var item in Model.Books)
 {
@@ -22,21 +23,17 @@
 
         <div class="col-md-9">
             <h3>@item.Name</h3>
+            <br/>
             <p>
                 @item.Description  
             </p>
             <p>
                 <strong>Price:</strong> $@item.Price
             </p>
+            <hr>
             <p>
-                <strong>Quantity:</strong> @item.Quantity
-            </p>
-            <p>
-                <strong>SubTotal:</strong> $@item.Subtotal
-            </p>
-            <p>
-                <a asp-page="./Edit" asp-route-id="@item.BooksId" class="btn btn-primary">Edit Order</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a asp-page="./Delete" asp-route-id="@item.BooksId" class="btn btn-danger">Delete Order</a>
+                <a asp-page="./Edit" asp-route-id="@item.BooksId" class="btn btn-primary">Edit </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a asp-page="./Delete" asp-route-id="@item.BooksId" class="btn btn-danger">Delete </a>
             </p>
         </div>
     </div>

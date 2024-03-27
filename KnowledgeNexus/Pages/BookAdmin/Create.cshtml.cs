@@ -50,10 +50,6 @@ namespace KnowledgeNexus.Pages.BookAdmin
                 return Page();
             }
 
-            // Set the Selection Date for the book being selected by the buyer 
-
-            Books.SelectionDate = DateTime.Now;
-
             //
             // Upload File Server
             //

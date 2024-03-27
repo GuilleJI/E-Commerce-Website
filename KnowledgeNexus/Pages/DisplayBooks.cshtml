@@ -5,14 +5,11 @@
 }
 
 <div class="d-flex justify-content-center">
-    <img src="@imagePath" style="width:850px;"/>
+    <img src="@imagePath" style="width:800px;"/>
    
 </div>
 
 <h3>@Model.Books.Name</h3>
 <p>@Model.Books.Description</p>
 <p>@Model.Books.Price</p>
-<p>@Model.Books.Quantity</p>
-<p>@Model.Books.Subtotal</p>
-<p>@Model.Books.SelectionDate.ToString("D")</p>
 <p><a asp-page="./index" class="btn btn-secondary">Return</a></p>

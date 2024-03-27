@@ -9,21 +9,44 @@ using Microsoft.EntityFrameworkCore;
 using KnowledgeNexus.Data;
 using KnowledgeNexus.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel;
+using Microsoft.Extensions.Hosting;
 
 namespace KnowledgeNexus.Pages.BookAdmin
 {
-    [Authorize]
+    /// <summary>
+    /// Essential: Use [Authorize] for secure pages in ASP.NET (restricted access except login user)
+    /// </summary>
+    [Authorize] 
     public class EditModel : PageModel
     {
-        private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;
+        private readonly KnowledgeNexusContext _context;
 
-        public EditModel(KnowledgeNexus.Data.KnowledgeNexusContext context)
+        private readonly ILogger<EditModel> _logger;
+
+        private readonly IHostEnvironment _environment;
+
+        public EditModel(KnowledgeNexusContext context, ILogger<EditModel> logger,
+        IHostEnvironment environment)
         {
             _context = context;
+            _logger = logger;
+            _environment = environment;
         }
 
         [BindProperty]
         public Books Books { get; set; } = default!;
+
+
+        /// <summary>
+        /// [BindProperty] and [DisplayName(“Change Image”)] link form data to the 
+        /// ‘FileUpload’ property and display “Change Image” as the label.
+        /// </summary>
+        
+
+        [BindProperty]
+        [DisplayName("Change Image")]
+        public IFormFile? FileUpload { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -50,6 +73,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
                 return Page();
             }
 
+
             var existingBook = await _context.Books.FirstOrDefaultAsync(m => m.BooksId == Books.BooksId);
 
             if (existingBook == null)
@@ -57,14 +81,30 @@ namespace KnowledgeNexus.Pages.BookAdmin
                 return NotFound();
             }
 
+            //Change photo 
+            if (FileUpload != null)
+            {
+                // Upload file to server 
+                string filename = FileUpload.FileName;
+                //Save the file 
+                string projectRootPath = _environment.ContentRootPath; 
+                string fileSavePath = Path.Combine(projectRootPath,"wwwroot\\uploads", filename);
+
+                // We use a "using" to ensure the filestream is disposed of when we're done with it
+                using(FileStream fileStream = new FileStream(fileSavePath, FileMode.Create))
+                {
+                    FileUpload.CopyTo(fileStream);
+                }
+
+                //Updating the fileName property of the existing book
+                existingBook.FileName = filename;
+            }
+          
             //Updating properties of existingBook with values from Books
             existingBook.Name = Books.Name;
             existingBook.Description = Books.Description;
             existingBook.Price = Books.Price;
-            existingBook.Quantity = Books.Quantity;
-
-            //Retain the existing FIleName value 
-            Books.FileName = existingBook.FileName;
+            
 
             try
             {
@@ -81,10 +121,9 @@ namespace KnowledgeNexus.Pages.BookAdmin
                     throw;
                 }
             }
-
             return RedirectToPage("./Index");
+            
         }
-
         private bool BooksExists(int id)
         {
             return _context.Books.Any(e => e.BooksId == id);

@@ -5,7 +5,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit Order</h1>
+<h1>Edit Selected Item</h1>
 <hr />
 
 @{
@@ -15,15 +15,18 @@
 <div class="row">
     <div class="col-md-5">
         <img src="@imagePath" class="img-fluid" />
-        <form method="post">
+    </div>
+    <div class ="col-md-5">
+        <!-- Adding multipart/form-data to upload file(s) -->
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Books.BooksId" />
-            <input type="hidden" asp-for="Books.SelectionDate" />
-            
 
             <div class="mb-3">
-                Selected: @Model.Books.SelectionDate
+                <label asp-for="FileUpload" class="form-label"></label><br>
+                <input asp-for="FileUpload" class="form-control" />
+                <span asp-validation-for="FileUpload" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
@@ -35,11 +38,6 @@
                 <label asp-for="Books.Description" class="control-label"></label>
                 <input asp-for="Books.Description" class="form-control" />
                 <span asp-validation-for="Books.Description" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Books.Quantity" class="control-label"></label>
-                <input asp-for="Books.Quantity" class="form-control" min="0" max="10" />
-                <span asp-validation-for="Books.Quantity" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Books.Price" class="control-label"></label>
@@ -54,6 +52,7 @@
     </div>
 </div>
 
+<br/>
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
