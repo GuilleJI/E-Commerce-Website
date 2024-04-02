@@ -13,7 +13,7 @@
 
         <div class="col-3" id="myColumn">
             <div class="card my-2 store-card">
-                <a class="a-cleanup" asp-controleer="Store" asp-action="Details" asp-route-id="@bookstore.BooksId">
+                <a class="a-cleanup" asp-page="DisplayBooks" asp-route-id="@bookstore.BooksId">
                     <img src="@imageSrc" class="card-img-top card-img-custom" />
                     <div class="card-body">
                         <h5 class="mb-3" >@bookstore.Name</h5>

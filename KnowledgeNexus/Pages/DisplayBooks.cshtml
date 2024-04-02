@@ -4,12 +4,37 @@
     string imagePath = "/uploads/" + Model.Books.FileName;
 }
 
-<div class="d-flex justify-content-center">
-    <img src="@imagePath" style="width:800px;"/>
-   
-</div>
+<h1>Details</h1>
+<h2>Book</h2>
+<hr />
+<br />
+<br />
 
-<h3>@Model.Books.Name</h3>
-<p>@Model.Books.Description</p>
-<p>@Model.Books.Price</p>
-<p><a asp-page="./index" class="btn btn-secondary">Return</a></p>
+<div class="row">
+    <div class="col-md-5">
+        <img src="@imagePath" class="img-fluid" />
+    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="col-md-5">
+        <!-- Adding multipart/form-data to upload file(s) -->
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Books.BooksId" />
+
+            <div class="product-details mb-3">
+                <h2 class="product-title">@Model.Books.Name</h2>
+                <br />
+                <h4 class="product-price">CA$@Model.Books.Price</h4>
+                <p>Online pricing. Prices and offers may vary in store.</p>
+                <hr />             
+                <a asp-page="./Index" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i>  Continue Shopping</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a asp-page="./Index" class=" btn btn-primary"><i class="fa-solid fa-cart-plus"></i> Add to Cart</a>             
+            </div>
+            <br />
+            <div>
+                <h5>Description:</h5>
+                <p class="product-description">@Model.Books.Description</p>
+            </div>
+        </form>
+    </div>
+</div>
