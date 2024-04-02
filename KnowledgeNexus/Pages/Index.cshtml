@@ -12,9 +12,9 @@
         string imageSrc = "/uploads/" + bookstore.FileName;
 
         <div class="col-3" id="myColumn">
-            <div class="card">
-                <a asp-controleer="Store" asp-action="Details" asp-route-id="@bookstore.BooksId">
-                    <img src="@imageSrc" class="card-img-top" />
+            <div class="card my-2 store-card">
+                <a class="a-cleanup" asp-controleer="Store" asp-action="Details" asp-route-id="@bookstore.BooksId">
+                    <img src="@imageSrc" class="card-img-top card-img-custom" />
                     <div class="card-body">
                         <h5 class="mb-3" >@bookstore.Name</h5>
                         
@@ -22,7 +22,7 @@
                     <br />
                     <div class="card-body">
                         <span class="card-text">CA$@bookstore.Price</span>
-                        <a asp-controller="" asp-route-id="@bookstore.BooksId" class="btn btn-primary float-right"><i class="fa-solid fa-cart-plus"></i></a>
+                        <a asp-controller="" asp-action="" asp-route-id="@bookstore.BooksId" class="btn btn-primary cartButton"><i class="fa-solid fa-cart-plus"></i></a>
                     </div>
                 </a>            
             </div>
