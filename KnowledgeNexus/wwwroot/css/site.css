@@ -21,6 +21,42 @@ body {
   margin-bottom: 60px;
 }
 
+
+/* Home Page column layout*/
+
+a {
+    text-decoration: none; 
+}
+
+
+.card-body { 
+    height: 6em; 
+}
+
+
+/* Tablet Version*/
+
+@media (max-width: 992px){
+    #myColumn {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* Mobile Version */
+
+@media (max-width: 576px) {
+    #myColumn {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+
+
+
+
+
 /*
     Book Admin styles
 */

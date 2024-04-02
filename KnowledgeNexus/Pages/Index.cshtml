@@ -4,8 +4,31 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="my-4">Store</h2>
+
+<div class="row" id="cards">
+    @foreach (var bookstore in Model.Books)
+    {
+        string imageSrc = "/uploads/" + bookstore.FileName;
+
+        <div class="col-3" id="myColumn">
+            <div class="card">
+                <a asp-controleer="Store" asp-action="Details" asp-route-id="@bookstore.BooksId">
+                    <img src="@imageSrc" class="card-img-top" />
+                    <div class="card-body">
+                        <h5 class="mb-3" >@bookstore.Name</h5>
+                        
+                    </div>
+                    <br />
+                    <div class="card-body">
+                        <span class="card-text">CA$@bookstore.Price.ToString()</span>
+                        <a asp-controller="" asp-route-id="@bookstore.BooksId" class="btn btn-primary"></a>
+                    </div>
+                </a>            
+            </div>
+            <br />
+        </div>
+    }
 </div>
+
 
