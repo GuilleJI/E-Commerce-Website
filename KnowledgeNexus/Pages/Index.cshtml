@@ -11,10 +11,10 @@
     {
         string imageSrc = "/uploads/" + bookstore.FileName;
 
-        <div class="col-3" id="myColumn">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" id="myColumn">
             <div class="card my-2 store-card">
                 <a class="a-cleanup" asp-page="DisplayBooks" asp-route-id="@bookstore.BooksId">
-                    <img src="@imageSrc" class="card-img-top card-img-custom" />
+                    <img src="@imageSrc" class="card-img-top card-img-custom img-fluid" />
                     <div class="card-body">
                         <h5 class="mb-3" >@bookstore.Name</h5>
                         
