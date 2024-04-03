@@ -38,10 +38,8 @@ a {
     color: inherit; 
 }
 
-.card-img-custom{
-    width: 100%;
-    height: 26vw;
-    object-fit: cover;
+#myColumn{
+    margin: 20px auto; 
 }
 
 .store-card{
@@ -55,16 +53,21 @@ a {
 
 .card-body { 
     height: 6em; 
-}
-
-.btn.btn-primary.cartButton {
-    float: right;
+    
 }
 
 
+
+/* Laptop (regular size) */
+@media (max-width: 1024px){
+    #myColumn{
+        flex: 0 0 25%;
+        max-width: 25%; 
+    }
+}
 
 /* Tablet Version*/
-@media (max-width: 992px) {
+@media (max-width: 853px) {
     #myColumn {
         flex: 0 0 50%;
         max-width: 50%;
