@@ -3,6 +3,7 @@ using KnowledgeNexus.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace KnowledgeNexus.Pages
 {
@@ -20,28 +21,24 @@ namespace KnowledgeNexus.Pages
             _context = context; 
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             Books = await _context.Books.ToListAsync();
 
-            //Check if the cookies exists
-            if (!Request.Cookies.ContainsKey("BookRecord"))
+            // Check if the cookie exists 
+            if (!Request.Cookies.ContainsKey("ShoppingCartCookie"))
             {
-                //Create a new cookie with a 1-day expiry
-                var cookieOptions = new CookieOptions
+                // Create a new cookie
+                Response.Cookies.Append("ShoppingCartCookie", "value", new CookieOptions
                 {
-                    Expires = DateTime.Now.AddDays(1),
-                    IsEssential = true // Make the cookie essential
-                };
-
-                // Set the cookie value 
-                Response.Cookies.Append("BookRecord", "cookie_value", cookieOptions);
+                    Expires = DateTime.UtcNow.AddDays(1)
+                });
             }
 
-            //Your existing code to fetch books can go here
-            Books = await _context.Books.ToListAsync(); 
+            return Page(); 
 
-        }
+        } 
+
 
     }
 }
