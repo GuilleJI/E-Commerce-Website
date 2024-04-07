@@ -29,7 +29,7 @@ namespace KnowledgeNexus.Pages
             if (!Request.Cookies.ContainsKey("ShoppingCartCookie"))
             {
                 // Create a new cookie
-                Response.Cookies.Append("ShoppingCartCookie", "value", new CookieOptions
+                Response.Cookies.Append("ShoppingCartCookie", "", new CookieOptions
                 {
                     Expires = DateTime.UtcNow.AddDays(1)
                 });
