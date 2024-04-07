@@ -1,4 +1,3 @@
-using Humanizer;
 using KnowledgeNexus.Data;
 using KnowledgeNexus.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -36,36 +35,10 @@ namespace KnowledgeNexus.Pages
             else
             {
                 Books = books;
+               
+
             }
             return Page();
         }
-
-        public IActionResult OnPost()
-        {
-            var cartCookie = Request.Cookies["ShoppingCart"];
-
-            // Get the product ID from the books object
-            int productId = Books.BooksId;
-
-            //If the cart cookie already exist, append the new BooksId to it
-            if(cartCookie != null)
-            {
-                cartCookie += "," + productId;
-            }
-            else // If the cart cookie doesn't exist, create a new one with the BooksId
-            {
-                cartCookie = productId.ToString(); 
-            }
-
-            // Update the cookie with the new cart content
-            Response.Cookies.Append("ShoppingCart", cartCookie);
-
-            // Redirect to the home page 
-            return RedirectToPage("/Index"); 
-        }
-       
-       
-
-
     }
 }
