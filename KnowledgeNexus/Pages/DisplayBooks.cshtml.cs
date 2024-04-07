@@ -42,7 +42,7 @@ namespace KnowledgeNexus.Pages
 
                 //
                 // Get the existing cookie value
-                string? cookieValue = Request.Cookies["BookCookies"]; // Can only read the cookie value 1st character, not the whole string
+                string? cookieValue = Request.Cookies["ProductIDs"]; // Can only read the cookie value 1st character, not the whole string
 
                 // Cookie does not exist
                 if (cookieValue == null)
@@ -67,7 +67,7 @@ namespace KnowledgeNexus.Pages
             if (HttpContext.Request.Form.Count > 0)
             {
                 // Get the existing cookie value
-                string? cookieValue = Request.Cookies["BookCookies"];
+                string? cookieValue = Request.Cookies["ProductIDs"];
 
                 // Get the product ID from the form
                 string productId = HttpContext.Request.Form["id"];
@@ -85,7 +85,7 @@ namespace KnowledgeNexus.Pages
 
         private void createCookie(string value)
         {
-            Response.Cookies.Append("BookCookies", value, new CookieOptions()
+            Response.Cookies.Append("ProductIDs", value, new CookieOptions()
             {
                 Expires = DateTime.Now.AddDays(1)
             });

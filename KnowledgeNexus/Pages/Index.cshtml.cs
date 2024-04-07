@@ -28,7 +28,7 @@ namespace KnowledgeNexus.Pages
             Books = await _context.Books.ToListAsync();
 
             // Get the existing cookie value
-            string? cookieValue = Request.Cookies["BookCookies"];
+            string? cookieValue = Request.Cookies["ProductIDs"];
 
             // Cookie does not exist
             if (cookieValue == null)
@@ -49,7 +49,7 @@ namespace KnowledgeNexus.Pages
             // A helper function to create a cookie and set its value to count
             private void createCookie(int count)
             {
-                Response.Cookies.Append("BookCookies", count.ToString(), new CookieOptions()
+                Response.Cookies.Append("ProductIDs", count.ToString(), new CookieOptions()
                 {
                     Expires = DateTime.Now.AddDays(1)
                 });
