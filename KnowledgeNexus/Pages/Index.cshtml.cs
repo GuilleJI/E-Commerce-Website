@@ -15,10 +15,10 @@ namespace KnowledgeNexus.Pages
         public IList<Books> Books { get; set; } = default!; 
 
         //Creating Cookie to store Book Id's (cookies 1 of 7)
-        public List<int> BooksId { get; set; } = new List<int>();
+        public List<int> BookIds { get; set; } = new List<int>();
 
         //Display the Cart Sum (cookies 2 of 7)
-        public int cartSum { get; set; } = 0;
+        public int cartSum { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, KnowledgeNexusContext context)
         {
@@ -31,7 +31,7 @@ namespace KnowledgeNexus.Pages
             Books = await _context.Books.ToListAsync();
 
             //Inside out onGetAsync() function, Get exisiting value for the Cookie (cookies 3 of 7)
-            string? CookieValue = Request.Cookies["BooksId"];
+            string? CookieValue = Request.Cookies["BookIds"];
 
             //If that cookie does not exist: (cookies 4 of 7)
             if (CookieValue == null) 
@@ -50,7 +50,7 @@ namespace KnowledgeNexus.Pages
         //Finally we create a function to create that cookie and set its value to count. In addition, we'll set up the cookie with a 1 day expiry (24hrs) (cookies 7 of 7)
         private void createCookie(int count)
         {
-            Response.Cookies.Append("BooksId", count.ToString(), new CookieOptions()
+            Response.Cookies.Append("BookIds", count.ToString(), new CookieOptions()
             {
                 Expires = DateTime.Now.AddDays(1)
             });
