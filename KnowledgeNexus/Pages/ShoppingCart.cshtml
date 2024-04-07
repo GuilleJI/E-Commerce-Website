@@ -6,6 +6,40 @@
 
 <h4>Shopping Cart Page</h4>
 
+@for (var i = 0; i < Model.Books.Count; i++)
+{
+    string imagePath = "/uploads/" + Model.Books[i].FileName;
+
+    <div class="row">
+        <div class="col-md-5">
+            <img src="@imagePath" class="img-fluid" />
+        </div>
+        <div class="col-md-5">
+            <!-- Adding multipart/form-data to upload file(s) -->
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="Books[i].BooksId" />
+
+                <div class="product-details mb-3">
+                    <h2 class="product-title">@Model.Books[i].Name</h2>
+                    <br />
+                    <h4 class="product-price">CA$@Model.Books[i].Price</h4>
+                    <p>Online pricing. Prices and offers may vary in store.</p>
+                    <hr />
+                    <a asp-page="./Index" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i>  Continue Shopping</a>
+                    <a asp-page="./Checkout" type="submit" class=" btn btn-primary"><i class="fa-solid fa-cart-plus"></i> Checkout</a>
+                </div>
+                <br />
+                <div>
+                    <h5>Description:</h5>
+                    <p class="product-description">@Model.Books[i].Description</p>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
 <div>
     <a asp-page="./Checkout">Checkout</a>
 </div>
