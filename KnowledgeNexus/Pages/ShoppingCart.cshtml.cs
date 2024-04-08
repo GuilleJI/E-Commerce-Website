@@ -34,12 +34,12 @@ namespace KnowledgeNexus.Pages
             if (cookieValue == null)
             {
                 // Create cookie and set its initial value to 0
-                createCookie("0");
+                createCookie("");
             }
             else// If the cookie exists, parse its value into ProductIDs list
             {
                 // Parse the value of the cookie and render the page to display a list of the products with details including image. 
-                string[] ids = cookieValue.Split(",");
+                string[] ids = cookieValue.Split("-");
 
                 // Add product IDs to the list
                 ProductIDs.AddRange(ids.Select(int.Parse));

@@ -34,11 +34,10 @@ namespace KnowledgeNexus.Pages
             if (cookieValue == null)
             {
                 // Create cookie and set its initial value to 0
-                createCookie(0);
+                createCookie("");
             }
             else// If the cookie exists, parse its value into ProductIDs list
             {
-                // Fix how to get the length of "9,3,2,8,9,9"
 
                 CartSum = cookieValue.Split("-").Length;
 
@@ -47,7 +46,7 @@ namespace KnowledgeNexus.Pages
 
         }
             // A helper function to create a cookie and set its value to count
-            private void createCookie(int count)
+            private void createCookie(string count)
             {
                 Response.Cookies.Append("ProductIDs", count.ToString(), new CookieOptions()
                 {

@@ -19,16 +19,17 @@
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="Books.BooksId" />
+            <input type="hidden" name="id" value="@Model.Books.BooksId" />
 
             <div class="product-details mb-3">
                 <h2 class="product-title">@Model.Books.Name</h2>
                 <br />
                 <h4 class="product-price">CA$@Model.Books.Price</h4>
                 <p>Online pricing. Prices and offers may vary in store.</p>
-                <hr />             
+                <hr />  
+                
                 <a asp-page="./Index" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i>  Continue Shopping</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a asp-page="./Index"  type="submit" class=" btn btn-primary"><i class="fa-solid fa-cart-plus"></i> Add to Cart</a>             
+                <button  type="submit" class=" btn btn-primary"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>             
             </div>
             <br />
             <div>
