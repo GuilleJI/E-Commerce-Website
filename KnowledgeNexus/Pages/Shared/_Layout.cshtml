@@ -30,16 +30,16 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/BookAdmin/Logout">Logout</a>
-                        </li>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <!--Shopping cart -->
-                       
+                        </li>                     
+                    </ul>
+                    <!--Shopping Cart-->
+                    <ul class="navbar-nav">
                         <li class="nav-item cart-section">
-                            <a class="shopping-cart" asp-page="/ShoppingCart"><i <i class="fa-solid fa-cart-shopping"></i>></i>
+                            <a class="shopping-cart" asp-page="/ShoppingCart">
+                                <i class="fa-solid fa-bag-shopping fa-bounce"></i>
                                 <span class="cart-quantity id="cart-sum">@Model.CartSum</span>
                             </a>
                         </li>
-                       
-
                     </ul>
                 </div>
             </div>

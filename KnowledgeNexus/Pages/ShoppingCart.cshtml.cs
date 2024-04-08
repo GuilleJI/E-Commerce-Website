@@ -52,9 +52,9 @@ namespace KnowledgeNexus.Pages
             }
         }
 
-        private void createCookie(string value)
+        private void createCookie(string count)
         {
-            Response.Cookies.Append("ProductIDs", value, new CookieOptions()
+            Response.Cookies.Append("ProductIDs", count, new CookieOptions()
             {
                 Expires = DateTime.Now.AddDays(1)
             });
