@@ -14,6 +14,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
     [Authorize]
     public class IndexModel : PageModel
     {
+        public int CartSum { get; set; }
         // Properties should be at the top od the class
 
         private readonly KnowledgeNexusContext _context;

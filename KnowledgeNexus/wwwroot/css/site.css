@@ -21,6 +21,10 @@ body {
   margin-bottom: 60px;
 }
 
+/* Navbar */
+.navbar .a{
+    color: white;
+}
 
 /* Home Page column layout*/
 

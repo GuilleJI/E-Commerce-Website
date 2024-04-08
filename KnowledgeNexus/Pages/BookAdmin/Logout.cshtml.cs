@@ -7,6 +7,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
 {
     public class LogoutModel : PageModel
     {
+        public int CartSum { get; set; }
         public void OnGet()
         {
         }

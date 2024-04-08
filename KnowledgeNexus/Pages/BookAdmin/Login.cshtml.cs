@@ -9,6 +9,7 @@ namespace KnowledgeNexus.Pages.BookAdmin
 {
     public class LoginModel : PageModel
     {
+        public int CartSum { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
 
