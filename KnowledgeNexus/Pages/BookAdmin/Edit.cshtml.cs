@@ -20,12 +20,13 @@ namespace KnowledgeNexus.Pages.BookAdmin
     [Authorize] 
     public class EditModel : PageModel
     {
+        
         private readonly KnowledgeNexusContext _context;
 
         private readonly ILogger<EditModel> _logger;
 
         private readonly IHostEnvironment _environment;
-
+        public int CartSum { get; set; }
         public EditModel(KnowledgeNexusContext context, ILogger<EditModel> logger,
         IHostEnvironment environment)
         {

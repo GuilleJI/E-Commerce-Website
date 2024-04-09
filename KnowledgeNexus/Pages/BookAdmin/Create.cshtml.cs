@@ -15,6 +15,8 @@ namespace KnowledgeNexus.Pages.BookAdmin
     [Authorize]
     public class CreateModel : PageModel
     {
+        public int CartSum { get; set; }
+
         //Seperating class properties 
 
         private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;

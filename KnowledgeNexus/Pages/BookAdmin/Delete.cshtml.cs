@@ -14,6 +14,8 @@ namespace KnowledgeNexus.Pages.BookAdmin
     [Authorize]
     public class DeleteModel : PageModel
     {
+        public int CartSum { get; set; }
+
         private readonly KnowledgeNexus.Data.KnowledgeNexusContext _context;
 
         public DeleteModel(KnowledgeNexus.Data.KnowledgeNexusContext context)
