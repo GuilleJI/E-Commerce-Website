@@ -125,3 +125,8 @@ a {
 .row-bookadmin {
     margin-top: 20px;
 }
+
+table.shopping-cart td th {
+    padding: 10px; /* Adjust as needed */
+}
+

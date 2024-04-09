@@ -4,53 +4,57 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
-<h4>Shopping Cart Page</h4>
+<h5>My Shopping Cart</h5>
+<hr />
+<br />
 
 @if (Model.Books == null || Model.Books.Count == 0)
 {
-    <p>Your cart is EMPTY</p>
-    <a asp-page="./Index">Keep Shopping</a>
+    <h3 class="text-danger">Your cart is EMPTY</h3>
+    <br />
+    <div col="col-md-5">
+        <img src="~/Images/Empty Cart.png" class="img-fluid" />
+    </div>
+    <br />
+    <br />
+    <a asp-page="./Index" class="btn btn-primary">Keep Shopping</a>
 }
 else
 {
-    
-    @for (var i = 0; i < Model.Books.Count; i++)
-    {
-        string imagePath = "/uploads/" + Model.Books[i].FileName;
+    <table class="shopping-cart container">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Price</th>
+                
+            </tr>
+        </thead>
 
-        <div class="row">
-            <div class="col-md-5">
-                <img src="@imagePath" class="img-fluid" />
-            </div>
-            <div class="col-md-5">
-                <!-- Adding multipart/form-data to upload file(s) -->
-                <form method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <input type="hidden" asp-for="Books[i].BooksId" />
-
-                    <div class="product-details mb-3">
-                        <h2 class="product-title">@Model.Books[i].Name</h2>
-                        <br />
-                        <h4 class="product-price">CA$@Model.Books[i].Price</h4>
-                        <p>Online pricing. Prices and offers may vary in store.</p>
-                        <hr />
-                        <a asp-page="./Index" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i>  Continue Shopping</a>
-                        <a asp-page="./Checkout" type="submit" class=" btn btn-primary"><i class="fa-solid fa-cart-plus"></i> Checkout</a>
-                    </div>
-                    <br />
-                    <div>
-                        <h5>Description:</h5>
-                        <p class="product-description">@Model.Books[i].Description</p>
-                    </div>
-                </form>
-            </div>
-        </div>
-    }
-
-    <div>
-        <a asp-page="./Checkout">Checkout</a>
-    </div>
+        <tbody>
+            @foreach (var item in Model.Books)
+            {
+                <tr>         
+                    <td><img src="~/uploads/@item.FileName" class="img-fluid" width="400px;" /></td>
+                    
+                    <td>@item.Name</td>
+                    
+                    <td>@item.Description</td>
+                    
+                    <th>CA$@item.Price</th>              
+                </tr>
+            }
+        </tbody>
+    </table>
+  
+    <br />
+    <br />   
+    <form method="post">
+        <button type="submit" class="btn btn-secondary">Checkout</button>
+        <a asp-page="./Index" class="btn btn-warning"> Continue Shopping</a>
+    </form>
 
 }
+
 
