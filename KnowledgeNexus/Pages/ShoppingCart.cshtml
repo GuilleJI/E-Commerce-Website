@@ -21,6 +21,9 @@
 }
 else
 {
+    // Initializing the total price 
+    decimal total = 0; 
+
     <table class="shopping-cart container">
         <thead>
             <tr>
@@ -43,6 +46,8 @@ else
                 // Calculating the subtotal price (quantity * item price)
                 decimal subTotal = (quantity) * (item.Price);
 
+                total += subTotal; // Add subtotal to total 
+
                 <tr>         
                     <td><img src="~/uploads/@item.FileName" class="img-fluid" width="400px;" /></td>
                     
@@ -53,18 +58,23 @@ else
                     <td>@quantity</td>
 
                     <td>CA$@subTotal</td>
+
+                    
                 </tr>
             }
         </tbody>
+       
     </table>
+
+    
   
     <br />
     <br />
     <form method="post">
         <!-- if cookie is empty, not display checkout-->
-        @if (Model.CartSum > 0)
+        @if (Model.Books != null && Model.Books.Any())
         {
-            <a asp-page="./Checkout" class="btn btn-primary">Checkout</a>
+            <a asp-page="./Checkout" asp-route-total="@total" class="btn btn-primary">Checkout</a>
         }
         <a asp-page="./Index" class="btn btn-danger">Continue Shopping</a>
     </form>

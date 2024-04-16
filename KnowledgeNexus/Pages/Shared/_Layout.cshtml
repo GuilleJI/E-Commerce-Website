@@ -37,7 +37,10 @@
                         <li class="nav-item cart-section">
                             <a class="shopping-cart" asp-page="/ShoppingCart">
                                 <i class="fa-solid fa-bag-shopping fa-bounce"></i>
-                                <span class="cart-quantity id="cart-sum">@Model.CartSum</span>
+                                @if (Model.CartSum > 0)
+                                {
+                                    <span class="cart-quantity id="cart-sum">@Model.CartSum</span>
+                                }
                             </a>
                         </li>
                     </ul>
