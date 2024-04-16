@@ -8,7 +8,7 @@
 <hr />
 <br />
 
-@if (Model.Books == null || Model.Books.Count == 0)
+@if (Model.Books.Count == 0)
 {
     <h3 class="text-danger">Your cart is EMPTY</h3>
     <br />
@@ -28,6 +28,7 @@ else
                 <th>Item</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 
             </tr>
         </thead>
@@ -35,6 +36,9 @@ else
         <tbody>
             @foreach (var item in Model.Books)
             {
+                int BookId = item.BooksId;
+                int quantity = Model.ProductIDs.Count(id => id == BookId); 
+                // Counting the occurances of the current book id in the ProducID list 
                 <tr>         
                     <td><img src="~/uploads/@item.FileName" class="img-fluid" width="400px;" /></td>
                     
@@ -42,7 +46,8 @@ else
                     
                     <td>@item.Description</td>
                     
-                    <th>CA$@item.Price</th>              
+                    <td>CA$@item.Price</td>  
+                    <td>@quantity</td>
                 </tr>
             }
         </tbody>

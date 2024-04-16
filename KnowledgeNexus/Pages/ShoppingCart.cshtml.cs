@@ -12,6 +12,9 @@ namespace KnowledgeNexus.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly KnowledgeNexusContext _context;
 
+
+
+        // Cookie to store product IDs 
         public List<int> ProductIDs { get; set; } = new List<int>();
         public IList<Books> Books { get; set; } = default!;
 

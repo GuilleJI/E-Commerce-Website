@@ -19,6 +19,18 @@ namespace KnowledgeNexus.Models
         //Book price
         public decimal Price { get; set; }
 
+        //Book quantity 
+        public int Quantity { get; set; }
+
+        //Calculating the subtotal 
+        public decimal Subtotal
+        {
+            get
+            {
+                return Price * Quantity;
+            }
+        }
+
     }
 
 }
