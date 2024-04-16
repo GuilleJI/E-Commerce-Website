@@ -8,7 +8,7 @@
 <hr />
 <br />
 
-@if (Model.Books.Count == 0)
+@if (Model.Books == null || Model.Books.Count == 0)
 {
     <h3 class="text-danger">Your cart is EMPTY</h3>
     <br />
@@ -54,10 +54,14 @@ else
     </table>
   
     <br />
-    <br />   
+    <br />
     <form method="post">
-        <button type="submit" class="btn btn-secondary">Checkout</button>
-        <a asp-page="./Index" class="btn btn-warning"> Continue Shopping</a>
+        <!-- if cookie is empty, not display checkout-->
+        @if (Model.CartSum > 0)
+        {
+            <a asp-page="./Checkout" class="btn btn-primary">Checkout</a>
+        }
+        <a asp-page="./Index" class="btn btn-danger">Continue Shopping</a>
     </form>
 
 }
