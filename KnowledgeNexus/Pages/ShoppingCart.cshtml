@@ -44,7 +44,7 @@ else
                     
                     <td>@item.Name</td>
                     
-                    <td>@item.Description</td>
+                    <td>@(item.Description.Length > 100 ? item.Description.Substring(0, 100) + " ... ": item.Description)</td>
                     
                     <td>CA$@item.Price</td>  
                     <td>@quantity</td>
