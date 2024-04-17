@@ -1,5 +1,9 @@
+using KnowledgeNexus.Data;
+using KnowledgeNexus.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
@@ -8,103 +12,153 @@ namespace KnowledgeNexus.Pages
 {
     public class CheckoutModel : PageModel
     {
-        // Properties to represent payment details
-        [Required(ErrorMessage = "First Name is required")]
-        public string FirstName { get; set; }
+        private readonly ILogger<CheckoutModel> _logger;
+        private readonly KnowledgeNexusContext _context;
 
-        [Required(ErrorMessage = "Last Name is required")]
-        public string LastName { get; set; }
-
-        [Required(ErrorMessage = "Address is required")]
-        public string Address { get; set; }
-
-        public string Address2 { get; set; }
-
-        [Required(ErrorMessage = "City is required")]
-        public string City { get; set; }
-
-        [Required(ErrorMessage = "Province/Territory is required")]
-        public string Province { get; set; }
-
-        [Required(ErrorMessage = "Postal Code is required")]
-        [RegularExpression(@"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$", ErrorMessage = "Invalid Postal Code")]
-        public string PostalCode { get; set; }
-
-        [Required(ErrorMessage = "Name on Card is required")]
-        public string CardName { get; set; }
-
-        [Required(ErrorMessage = "Credit Card Number is required")]
-        [RegularExpression(@"^\d{16}$", ErrorMessage = "Invalid Credit Card Number")]
-        public string CardNumber { get; set; }
-
-        [Required(ErrorMessage = "Expiration Date is required")]
-        [RegularExpression(@"^\d{2}/\d{4}$", ErrorMessage = "Invalid Expiration Date")]
-        public string ExpirationDate { get; set; }
-
-        [Required(ErrorMessage = "CVC is required")]
-        [RegularExpression(@"^\d{3}$", ErrorMessage = "Invalid CVC")]
-        public string Cvc { get; set; }
+        public IList<Books> Books { get; set; } = new List<Books>();
+        public List<int> ProductIDs { get; set; } = new List<int>();
+        
+        public int CartSum { get; set; } = 0;
+        //public decimal Subtotal { get; set; } = 0;
+        public decimal Tax { get; set; } = 0;
+        public decimal Shipping { get; set; } = 0;
+        public decimal ShippingTax { get; set; } = 0;
+        public decimal Total { get; set; } = 0;
 
         // Property to hold the total purchase price 
         public decimal TotalPrice { get; set; }
 
-        // Property to hold the cart sum 
-        public int CartSum { get; set; }
-
-        // Inject HttpClient into the page model 
-        private readonly HttpClient _httpClient;
-
-        public CheckoutModel(HttpClient httpClient)
+        public class PurchaseData
         {
-            _httpClient = httpClient;
+            public string FirstName { get; set; } = string.Empty;
+            public string LastName { get; set; } = string.Empty;
+            public string Address { get; set; } = string.Empty;
+            public string City { get; set; } = string.Empty;
+            public string Province { get; set; } = string.Empty;
+            public string PostalCode { get; set; } = string.Empty;
+            public string CardName { get; set; } = string.Empty;
+            public string CardNumber { get; set; } = string.Empty;
+            public string ExpirationDate { get; set; } = string.Empty;
+            public string Cvc { get; set; } = string.Empty;
+            public string products { get; set; } = string.Empty;
         }
-        public void OnGet(decimal total)
+
+        [BindProperty]
+        public PurchaseData purchaseData { get; set; } = default!;
+        public CheckoutModel(ILogger<CheckoutModel> logger, KnowledgeNexusContext context)
         {
-            // Set the total purchase price from the parameter
+            _logger = logger;
+            _context = context;
+            purchaseData = new PurchaseData();
+        }
+
+        public async Task OnGetAsync(decimal total)
+        {
             TotalPrice = total;
+
+            Tax = Math.Round(TotalPrice * 0.15m, 2);
+            // Calculate shipping
+            if (TotalPrice > 70)
+            {
+                Shipping = 0;
+            }
+            else
+            {
+                Shipping = 5;
+            }
+            ShippingTax = Shipping * 0.1m;
+            Total = TotalPrice + Tax + Shipping + ShippingTax;
+
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            string? cookieValue = Request.Cookies["ProductsIDs"]; 
+
+            if(cookieValue == null)
+            {
+                createCookie("");
+            }
+            else
+            {
+                CartSum = cookieValue.Split("-").Length;
+
+                string[] ids = cookieValue.Split("-");
+
+                ProductIDs.AddRange(ids.Select(int.Parse));
+
+                purchaseData.products = cookieValue.Replace("-", ",");
+
+            }
+
+            Books = await _context.Books.Where(g => ProductIDs.Contains(g.BooksId)).ToListAsync();
+
+            //Subtotal = TotalPrice;
+
+            Tax = Math.Round(TotalPrice * 0.15m, 2);
+
+            Shipping = TotalPrice > 70 ? 0 : 5;
+
+            // Calculate shipping tax
+            ShippingTax = Shipping * 0.1m;
+
+            // Calculate total
+            Total = TotalPrice + Tax + Shipping + ShippingTax;
+
             if (!ModelState.IsValid)
             {
-                // If model validation fails, redisplay the page with validation errors
-                return Page();
+                return Page(); 
             }
 
-            // Prepare data to send to the API 
-            var requestData = new
+            // Serialize purchaseData to JSON
+            string jsonData = JsonConvert.SerializeObject(purchaseData);
+
+            // Hard code sample JSON payload
+            string jsonPayload = "{\"FirstName\":\"John\",\"LastName\":\"Doe\",\"Address\":\"123 Main St\",\"City\":\"New York\",\"Province\":\"NY\",\"PostalCode\":\"B3L1X6\",\"ccNumber\":\"1111111111111111\",\"ccExpiryDate\":\"1225\",\"cvv\":\"123\",\"products\":\"1,2,3,4,5\"}";
+
+            using (var client = new HttpClient())
             {
-                FirstName,
-                LastName,
-                Address,
-                City,
-                Province,
-                PostalCode,
-                ccNumber = CardNumber,
-                ccExpiryDate = ExpirationDate,
-                cvv = Cvc,
-                // Convert products list to comma-separated string
-                products = String.Join("-", Request.Cookies["products"].Split("-"))
-            };
+                client.BaseAddress = new Uri("https://purchasesapi20240407212852.azurewebsites.net");
 
-            // Serialize data to JSON
-            var json = JsonSerializer.Serialize(requestData);
+                client.DefaultRequestHeaders.Accept.Clear();
 
-            // Send data to the Purchase API 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("https://purchasesapi20240407212852.azurewebsites.net", content);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            if (!response.IsSuccessStatusCode)
-            {
-                //Handle API error
-                return RedirectToPage("/Error"); 
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync("/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseString = await response.Content.ReadAsStringAsync();
+
+                        TempData["InvoiceNumber"] = responseString;
+                        // Clear the cookie
+                        Response.Cookies.Delete("ProductIDs");
+
+                        return RedirectToPage("./Confirmation");
+                    }
+                    else
+                    {
+                        string responseString = await response.Content.ReadAsStringAsync();
+
+                        ModelState.AddModelError("", "An error occurred while processing your request. Please try again later." + responseString);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again later. Exception: " + ex.Message);
+                }
             }
-            // Model validation succeeded, process the order
-            // Implement order processing logic here
+            return Page();
 
-            // Redirect to the order confirmation page
-            return RedirectToPage("/OrderConfirmation");
+        }
+
+        private void createCookie(string value)
+        {
+            Response.Cookies.Append("ProductIDs", value, new CookieOptions()
+            {
+                Expires = DateTime.Now.AddDays(1)
+            });
         }
     }
 }
