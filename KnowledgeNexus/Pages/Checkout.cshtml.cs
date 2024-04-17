@@ -17,7 +17,7 @@ namespace KnowledgeNexus.Pages
 
         public IList<Books> Books { get; set; } = new List<Books>();
         public List<int> ProductIDs { get; set; } = new List<int>();
-        
+
         public int CartSum { get; set; } = 0;
         //public decimal Subtotal { get; set; } = 0;
         public decimal Tax { get; set; } = 0;
@@ -58,7 +58,7 @@ namespace KnowledgeNexus.Pages
 
             Tax = Math.Round(TotalPrice * 0.15m, 2);
             // Calculate shipping
-            if (TotalPrice > 70)
+            if (TotalPrice > 70 || TotalPrice == 0)
             {
                 Shipping = 0;
             }
