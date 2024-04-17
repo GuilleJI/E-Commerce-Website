@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Json;
 
 namespace KnowledgeNexus.Pages
 {
@@ -49,13 +51,20 @@ namespace KnowledgeNexus.Pages
         // Property to hold the cart sum 
         public int CartSum { get; set; }
 
+        // Inject HttpClient into the page model 
+        private readonly HttpClient _httpClient;
+
+        public CheckoutModel(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
         public void OnGet(decimal total)
         {
             // Set the total purchase price from the parameter
             TotalPrice = total;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -63,6 +72,34 @@ namespace KnowledgeNexus.Pages
                 return Page();
             }
 
+            // Prepare data to send to the API 
+            var requestData = new
+            {
+                FirstName,
+                LastName,
+                Address,
+                City,
+                Province,
+                PostalCode,
+                ccNumber = CardNumber,
+                ccExpiryDate = ExpirationDate,
+                cvv = Cvc,
+                // Convert products list to comma-separated string
+                products = String.Join("-", Request.Cookies["products"].Split("-"))
+            };
+
+            // Serialize data to JSON
+            var json = JsonSerializer.Serialize(requestData);
+
+            // Send data to the Purchase API 
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("https://purchasesapi20240407212852.azurewebsites.net", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                //Handle API error
+                return RedirectToPage("/Error"); 
+            }
             // Model validation succeeded, process the order
             // Implement order processing logic here
 
