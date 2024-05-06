@@ -15,7 +15,7 @@ namespace KnowledgeNexus.Pages
         private readonly ILogger<CheckoutModel> _logger;
         private readonly KnowledgeNexusContext _context;
 
-        public IList<Books> Books { get; set; } = new List<Books>();
+        public IList<Books> Books { get; set; } = default!;
         public List<int> ProductIDs { get; set; } = new List<int>();
 
         public int CartSum { get; set; } = 0;
@@ -26,7 +26,7 @@ namespace KnowledgeNexus.Pages
         public decimal Total { get; set; } = 0;
 
         // Property to hold the total purchase price 
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; } = 0;
 
         public class PurchaseData
         {
@@ -36,7 +36,7 @@ namespace KnowledgeNexus.Pages
             public string City { get; set; } = string.Empty;
             public string Province { get; set; } = string.Empty;
             public string PostalCode { get; set; } = string.Empty;
-            public string CardName { get; set; } = string.Empty;
+            
             public string CardNumber { get; set; } = string.Empty;
             public string ExpirationDate { get; set; } = string.Empty;
             public string Cvc { get; set; } = string.Empty;
@@ -52,28 +52,45 @@ namespace KnowledgeNexus.Pages
             purchaseData = new PurchaseData();
         }
 
-        public async Task OnGetAsync(decimal total)
+        public async Task OnGetAsync()
         {
-            TotalPrice = total;
+            string? cookieValue = Request.Cookies["ProductIDs"];
 
-            Tax = Math.Round(TotalPrice * 0.15m, 2);
-            // Calculate shipping
-            if (TotalPrice > 70 || TotalPrice == 0)
+            if (cookieValue == null)
             {
-                Shipping = 0;
+                createCookie("");
             }
             else
             {
-                Shipping = 5;
+                CartSum = cookieValue.Split("-").Length;
+
+                string[] ids = cookieValue.Split("-");
+
+                ProductIDs.AddRange(ids.Select(int.Parse));
+
+                purchaseData.products = cookieValue.Replace("-", ",");
+
             }
+
+            Books = await _context.Books.Where(g => ProductIDs.Contains(g.BooksId)).ToListAsync();
+
+            TotalPrice = Books.Sum(g => g.Price); ;
+
+            Tax = Math.Round(TotalPrice * 0.15m, 2);
+
+            Shipping = TotalPrice > 70 ? 0 : 5;
+
+            // Calculate shipping tax
             ShippingTax = Shipping * 0.1m;
+
+            // Calculate total
             Total = TotalPrice + Tax + Shipping + ShippingTax;
 
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            string? cookieValue = Request.Cookies["ProductsIDs"]; 
+            string? cookieValue = Request.Cookies["ProductIDs"]; 
 
             if(cookieValue == null)
             {
@@ -111,7 +128,7 @@ namespace KnowledgeNexus.Pages
             }
 
             // Serialize purchaseData to JSON
-            string jsonData = JsonConvert.SerializeObject(purchaseData);
+            //string jsonData = JsonConvert.SerializeObject(purchaseData);
 
             // Hard code sample JSON payload
             string jsonPayload = "{\"FirstName\":\"John\",\"LastName\":\"Doe\",\"Address\":\"123 Main St\",\"City\":\"New York\",\"Province\":\"NY\",\"PostalCode\":\"B3L1X6\",\"ccNumber\":\"1111111111111111\",\"ccExpiryDate\":\"1225\",\"cvv\":\"123\",\"products\":\"1,2,3,4,5\"}";
@@ -126,7 +143,7 @@ namespace KnowledgeNexus.Pages
 
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync("/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                    HttpResponseMessage response = await client.PostAsync("/", new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
                     if (response.IsSuccessStatusCode)
                     {
                         string responseString = await response.Content.ReadAsStringAsync();
