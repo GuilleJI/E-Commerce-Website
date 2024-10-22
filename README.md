@@ -15,4 +15,10 @@ Knowledge Nexus is an online bookstore developed using ASP.NET and C#. The websi
 - **Backend**: ASP.NET, C#, SQL 
 - **Version Control**: Git, GitHub
 
+
+## Desktop View
 ![Knowledge Nexus ](https://github.com/user-attachments/assets/16fca24c-8be5-4f27-a5aa-c8896eebc326)
+
+
+## Mobile View
+![Screenshot Knowledge Nexus Mobile Version](https://github.com/user-attachments/assets/9e0fdc36-f68d-40ba-920a-a6b120b702b6)
